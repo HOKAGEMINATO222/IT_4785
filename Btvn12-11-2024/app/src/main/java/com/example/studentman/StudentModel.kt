@@ -1,3 +1,3 @@
 package com.example.studentman
 
-data class StudentModel(val studentName: String, val studentId: String)
+data class StudentModel(var studentName: String, var studentId: String)

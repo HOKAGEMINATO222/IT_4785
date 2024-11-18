@@ -43,10 +43,14 @@ class MainActivity : AppCompatActivity() {
         }.show(supportFragmentManager, "EditStudentDialog")
     }
 
-    private fun showEditStudentDialog(student: StudentModel) {
-        EditStudentDialogFragment(student) { updatedStudent ->
-            studentViewModel.updateStudent(updatedStudent)
-        }.show(supportFragmentManager, "EditStudentDialog")
+    private fun showEditStudentDialog(position: Int) {
+        val student = studentViewModel.students.value?.get(position)
+
+        if (student != null) {
+            EditStudentDialogFragment(student) { updatedStudent ->
+                studentViewModel.updateStudent(updatedStudent, position)
+            }.show(supportFragmentManager, "EditStudentDialog")
+        }
     }
 
     private fun removeStudentAndShowSnackbar(student: StudentModel) {

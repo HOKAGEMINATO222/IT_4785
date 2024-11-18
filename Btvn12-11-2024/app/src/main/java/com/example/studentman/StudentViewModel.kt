@@ -54,18 +54,20 @@ class StudentViewModel : ViewModel() {
     }
 
     // Hàm cập nhật sinh viên
-    fun updateStudent(updatedStudent: StudentModel) {
+    fun updateStudent(updatedStudent: StudentModel, position: Int) {
         val currentList = _students.value.orEmpty()
 
-        // Chỉ cập nhật sinh viên khi ID trùng khớp và sinh viên cũ khác với sinh viên mới
-        _students.value = currentList.map {
-            if (it.studentId == updatedStudent.studentId && it != updatedStudent) {
-                updatedStudent
-            } else {
-                it
-            }
+        // Cập nhật sinh viên tại vị trí position
+        _students.value = currentList.toMutableList().apply {
+            this[position] = updatedStudent // Thay thế sinh viên ở vị trí position
         }
     }
+
+
+
+
+
+
 
 
     // Khôi phục sinh viên bị xóa
