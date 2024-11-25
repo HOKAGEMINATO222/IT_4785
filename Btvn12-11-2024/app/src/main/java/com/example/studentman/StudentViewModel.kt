@@ -63,13 +63,6 @@ class StudentViewModel : ViewModel() {
         }
     }
 
-
-
-
-
-
-
-
     // Khôi phục sinh viên bị xóa
     fun restoreStudent(student: StudentModel) {
         // Thêm sinh viên đã xóa trở lại vào danh sách
