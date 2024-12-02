@@ -8,6 +8,8 @@ import com.example.myapplication.databinding.ActivityAddStudentBinding
 class AddStudentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStudentBinding
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStudentBinding.inflate(layoutInflater)
