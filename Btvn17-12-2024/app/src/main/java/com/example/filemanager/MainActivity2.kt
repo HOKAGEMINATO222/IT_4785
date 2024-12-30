@@ -1,5 +1,8 @@
 package com.example.filemanager
 
+import Student
+import StudentDao
+import StudentDatabase
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
@@ -16,33 +19,162 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-class MainActivity2 : AppCompatActivity() {
-//    private val students = mutableListOf(
-//        StudentModel("Nguyễn Văn An", "SV001"),
-//        StudentModel("Trần Thị Bảo", "SV002"),
-//        StudentModel("Lê Hoàng Cường", "SV003"),
-//        StudentModel("Phạm Thị Dung", "SV004"),
-//        StudentModel("Đỗ Minh Đức", "SV005"),
-//        StudentModel("Vũ Thị Hoa", "SV006"),
-//        StudentModel("Hoàng Văn Hải", "SV007"),
-//        StudentModel("Bùi Thị Hạnh", "SV008"),
-//        StudentModel("Đinh Văn Hùng", "SV009"),
-//        StudentModel("Nguyễn Thị Linh", "SV010"),
-//        StudentModel("Phạm Văn Long", "SV011"),
-//        StudentModel("Trần Thị Mai", "SV012"),
-//        StudentModel("Lê Thị Ngọc", "SV013"),
-//        StudentModel("Vũ Văn Nam", "SV014"),
-//        StudentModel("Hoàng Thị Phương", "SV015"),
-//        StudentModel("Đỗ Văn Quân", "SV016"),
-//        StudentModel("Nguyễn Thị Thu", "SV017"),
-//        StudentModel("Trần Văn Tài", "SV018"),
-//        StudentModel("Phạm Thị Tuyết", "SV019"),
-//        StudentModel("Lê Văn Vũ", "SV020")
-//    )
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-    private val students = mutableListOf<StudentModel>()
+//class MainActivity2 : AppCompatActivity() {
+////    private val students = mutableListOf(
+////        StudentModel("Nguyễn Văn An", "SV001"),
+////        StudentModel("Trần Thị Bảo", "SV002"),
+////        StudentModel("Lê Hoàng Cường", "SV003"),
+////        StudentModel("Phạm Thị Dung", "SV004"),
+////        StudentModel("Đỗ Minh Đức", "SV005"),
+////        StudentModel("Vũ Thị Hoa", "SV006"),
+////        StudentModel("Hoàng Văn Hải", "SV007"),
+////        StudentModel("Bùi Thị Hạnh", "SV008"),
+////        StudentModel("Đinh Văn Hùng", "SV009"),
+////        StudentModel("Nguyễn Thị Linh", "SV010"),
+////        StudentModel("Phạm Văn Long", "SV011"),
+////        StudentModel("Trần Thị Mai", "SV012"),
+////        StudentModel("Lê Thị Ngọc", "SV013"),
+////        StudentModel("Vũ Văn Nam", "SV014"),
+////        StudentModel("Hoàng Thị Phương", "SV015"),
+////        StudentModel("Đỗ Văn Quân", "SV016"),
+////        StudentModel("Nguyễn Thị Thu", "SV017"),
+////        StudentModel("Trần Văn Tài", "SV018"),
+////        StudentModel("Phạm Thị Tuyết", "SV019"),
+////        StudentModel("Lê Văn Vũ", "SV020")
+////    )
+//
+//    private val students = mutableListOf<StudentModel>()
+//    private lateinit var adapter: StudentAdapter
+//    private lateinit var dbHelper: StudentDatabaseHelper
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContentView(R.layout.activity_main2)
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
+//
+//        dbHelper = StudentDatabaseHelper(this)
+//        students.addAll(dbHelper.getAllStudents())
+//        adapter = StudentAdapter(students, this)
+//
+//        val listView: ListView = findViewById(R.id.list_view_std)
+//        listView.adapter = adapter
+//
+//        registerForContextMenu(listView)
+//    }
+//
+//
+//    //    Option Menu
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater: MenuInflater = menuInflater
+//        inflater.inflate(R.menu.options_menu, menu)
+//        return true
+//    }
+//
+//    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+//        if (result.resultCode == RESULT_OK) {
+//            val name = result.data?.getStringExtra("name")
+//            val id = result.data?.getStringExtra("id")
+//
+//            if (!name.isNullOrEmpty() && !id.isNullOrEmpty()) {
+//                val newStudent = StudentModel(name, id)
+//                if (dbHelper.addStudent(newStudent)) {
+//                    students.add(newStudent)
+//                    adapter.notifyDataSetChanged()
+//                } else {
+//                    Toast.makeText(this, "Error adding student to database", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.item_add_std -> {
+//                val intent = Intent(this, AddStudentActivity::class.java)
+//                launcher.launch(intent)
+//                true
+//            }
+//            R.id.to_next_activity -> {
+//                val intent = Intent(this, PopupMenuActivity::class.java)
+//                startActivity(intent)
+//                true
+//            }
+//            else -> false
+//        }
+//    }
+//
+//    //    Context Menu
+//    override fun onCreateContextMenu(
+//        menu: ContextMenu?,
+//        v: View?,
+//        menuInfo: ContextMenu.ContextMenuInfo?
+//    ) {
+//        val inflater: MenuInflater = menuInflater
+//        inflater.inflate(R.menu.context_menu, menu)
+//        super.onCreateContextMenu(menu, v, menuInfo)
+//    }
+//
+//    private val editLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+//        if (result.resultCode == RESULT_OK) {
+//            val newName = result.data?.getStringExtra("name")
+//            val newId = result.data?.getStringExtra("id")
+//            val position = result.data?.getIntExtra("position", -1)
+//            val originalId = result.data?.getStringExtra("originalId")
+//
+//            if (!newName.isNullOrEmpty() && !newId.isNullOrEmpty() && position != null && position >= 0) {
+//                val updatedStudent = StudentModel(newName, newId)
+//                if (dbHelper.updateStudent(updatedStudent, originalId)) {
+//                    students[position] = updatedStudent
+//                    adapter.notifyDataSetChanged()
+//                } else {
+//                    Toast.makeText(this, "Error updating student in database", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//    }
+//    override fun onContextItemSelected(item: MenuItem): Boolean {
+//        val pos = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+//        return when (item.itemId) {
+//            R.id.item_edit -> {
+//                val intent = Intent(this, EditStudentActivity::class.java)
+//                intent.putExtra("name", students[pos].studentName)
+//                intent.putExtra("id", students[pos].studentId)
+//                intent.putExtra("position", pos)
+//                intent.putExtra("originalId", students[pos].studentId) // Pass original ID
+//                editLauncher.launch(intent)
+//                true
+//            }
+//            R.id.item_remove -> {
+//                val studentId = students[pos].studentId
+//                if (dbHelper.deleteStudent(studentId)) {
+//                    students.removeAt(pos)
+//                    adapter.notifyDataSetChanged()
+//                    Toast.makeText(this, "Student removed", Toast.LENGTH_LONG).show()
+//                } else {
+//                    Toast.makeText(this, "Error deleting student from database", Toast.LENGTH_SHORT).show()
+//                }
+//                true
+//            }
+//            else -> super.onContextItemSelected(item)
+//        }
+//    }
+//}
+
+class MainActivity2 : AppCompatActivity() {
+
+    private val students = mutableListOf<Student>()
     private lateinit var adapter: StudentAdapter
-    private lateinit var dbHelper: StudentDatabaseHelper
+    private lateinit var db: StudentDatabase
+    private lateinit var studentDao: StudentDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,22 +186,21 @@ class MainActivity2 : AppCompatActivity() {
             insets
         }
 
-        dbHelper = StudentDatabaseHelper(this)
-        students.addAll(dbHelper.getAllStudents())
-        adapter = StudentAdapter(students, this)
+        // Khởi tạo cơ sở dữ liệu Room
+        db = StudentDatabase.getInstance(this)
+        studentDao = db.studentDao()
 
-        val listView: ListView = findViewById(R.id.list_view_std)
-        listView.adapter = adapter
+        // Lấy danh sách sinh viên từ cơ sở dữ liệu
+        GlobalScope.launch(Dispatchers.IO) {
+            students.addAll(studentDao.getAllStudents())
+            runOnUiThread {
+                adapter = StudentAdapter(students, this@MainActivity2)
+                val listView: ListView = findViewById(R.id.list_view_std)
+                listView.adapter = adapter
+            }
+        }
 
-        registerForContextMenu(listView)
-    }
-
-
-    //    Option Menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.options_menu, menu)
-        return true
+        registerForContextMenu(findViewById(R.id.list_view_std))
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -78,12 +209,19 @@ class MainActivity2 : AppCompatActivity() {
             val id = result.data?.getStringExtra("id")
 
             if (!name.isNullOrEmpty() && !id.isNullOrEmpty()) {
-                val newStudent = StudentModel(name, id)
-                if (dbHelper.addStudent(newStudent)) {
-                    students.add(newStudent)
-                    adapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(this, "Error adding student to database", Toast.LENGTH_SHORT).show()
+                val newStudent = Student(studentName = name, studentId = id)
+
+                // Thêm sinh viên mới vào cơ sở dữ liệu
+                GlobalScope.launch(Dispatchers.IO) {
+                    val id = studentDao.insertStudent(newStudent)
+                    runOnUiThread {
+                        if (id > 0) {
+                            students.add(newStudent)
+                            adapter.notifyDataSetChanged()
+                        } else {
+                            Toast.makeText(this@MainActivity2, "Error adding student to database", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
@@ -96,24 +234,8 @@ class MainActivity2 : AppCompatActivity() {
                 launcher.launch(intent)
                 true
             }
-            R.id.to_next_activity -> {
-                val intent = Intent(this, PopupMenuActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    //    Context Menu
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.context_menu, menu)
-        super.onCreateContextMenu(menu, v, menuInfo)
     }
 
     private val editLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -121,19 +243,23 @@ class MainActivity2 : AppCompatActivity() {
             val newName = result.data?.getStringExtra("name")
             val newId = result.data?.getStringExtra("id")
             val position = result.data?.getIntExtra("position", -1)
-            val originalId = result.data?.getStringExtra("originalId")
 
             if (!newName.isNullOrEmpty() && !newId.isNullOrEmpty() && position != null && position >= 0) {
-                val updatedStudent = StudentModel(newName, newId)
-                if (dbHelper.updateStudent(updatedStudent, originalId)) {
-                    students[position] = updatedStudent
-                    adapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(this, "Error updating student in database", Toast.LENGTH_SHORT).show()
+                val updatedStudent = Student(studentName = newName, studentId = newId)
+                GlobalScope.launch(Dispatchers.IO) {
+                    studentDao.updateStudent(updatedStudent)
+                    runOnUiThread {
+                        students[position] = updatedStudent
+                        adapter.notifyDataSetChanged()
+                        Toast.makeText(this@MainActivity2, "Student updated", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
     }
+
+
+    // Xử lý Context Menu để chỉnh sửa và xóa sinh viên
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val pos = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
         return when (item.itemId) {
@@ -142,18 +268,18 @@ class MainActivity2 : AppCompatActivity() {
                 intent.putExtra("name", students[pos].studentName)
                 intent.putExtra("id", students[pos].studentId)
                 intent.putExtra("position", pos)
-                intent.putExtra("originalId", students[pos].studentId) // Pass original ID
                 editLauncher.launch(intent)
                 true
             }
             R.id.item_remove -> {
-                val studentId = students[pos].studentId
-                if (dbHelper.deleteStudent(studentId)) {
-                    students.removeAt(pos)
-                    adapter.notifyDataSetChanged()
-                    Toast.makeText(this, "Student removed", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, "Error deleting student from database", Toast.LENGTH_SHORT).show()
+                val student = students[pos]
+                GlobalScope.launch(Dispatchers.IO) {
+                    studentDao.deleteStudent(student)
+                    runOnUiThread {
+                        students.removeAt(pos)
+                        adapter.notifyDataSetChanged()
+                        Toast.makeText(this@MainActivity2, "Student removed", Toast.LENGTH_LONG).show()
+                    }
                 }
                 true
             }
